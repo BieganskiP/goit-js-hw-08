@@ -1,33 +1,33 @@
 let throttle = require('lodash.throttle');
 let inputForm = document.querySelector('.feedback-form');
+let inputEmail = inputForm.querySelector('label > input');
+let inputText = inputForm.querySelector('label > textarea');
 
-inputForm.addEventListener('input', event => {
-  const {
-    elements: { email, message },
-  } = event.currentTarget;
-
-  let storedInput = {
-    email: email.value,
-    message: message.value,
-  };
-
-  localStorage.setItem('feedback-form-state', JSON.stringify(storedInput));
-});
+inputForm.addEventListener(
+  'input',
+  throttle(() => {
+    let storedInput = {
+      email: inputEmail.value,
+      message: inputText.value,
+    };
+    localStorage.setItem('feedback-form-state', JSON.stringify(storedInput));
+  }, 500)
+);
 
 let storedOutput = JSON.parse(localStorage.getItem('feedback-form-state'));
 
 if (localStorage.getItem('feedback-form-state') === null) {
-  inputForm.querySelector('label > input').value = '';
-  inputForm.querySelector('label > textarea').value = '';
+  inputEmail.value = '';
+  inputText.value = '';
 } else {
-  inputForm.querySelector('label > input').value = storedOutput.email;
-  inputForm.querySelector('label > textarea').value = storedOutput.message;
+  inputEmail.value = storedOutput.email;
+  inputText.value = storedOutput.message;
 }
 
 inputForm.addEventListener('submit', event => {
   event.preventDefault();
   console.log(localStorage.getItem('feedback-form-state'));
-  inputForm.querySelector('label > input').value = '';
-  inputForm.querySelector('label > textarea').value = '';
+  inputEmail.value = '';
+  inputText.value = '';
   localStorage.removeItem('feedback-form-state');
 });
