@@ -12,6 +12,6 @@ player.on(
 );
 let currentTime = 0;
 if (localStorage.getItem('videoplayer-current-time') != null) {
-  currentTime = localStorage.getItem('videoplayer-current-time')
-} else removeEventListener
+  currentTime = localStorage.getItem('videoplayer-current-time');
+} else return;
 player.setCurrentTime(currentTime);
